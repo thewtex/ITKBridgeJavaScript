@@ -148,27 +148,10 @@ const copyMainSources = function (callback) {
   const result = asyncMod.map(sourceFiles, copier)
   callback(null, result)
 }
-
-const browserify = require('browserify')
-const browserifyBuild = ramda.curry(function (outputDir, es6File, callback) {
-  let basename = path.basename(es6File)
-  let output = path.join(outputDir, basename)
-  console.log('Converting ' + basename + ' ...')
-  const bundler = browserify(es6File)
-  bundler.transform({global: true}, 'uglifyify')
-  bundler
-    .transform('babelify', {presets: ['es2015']})
-    .bundle()
-    .pipe(fs.createWriteStream(output))
-
-  console.log(basename + ' conversion complete')
-  callback(null, basename)
-})
-const browserifyWebWorkerBuildParallel = function (callback) {
-  const es6Files = glob.sync(path.join('src', 'WebWorkers', '*.js'))
-  const outputDir = path.join('dist', 'WebWorkers')
-  builder = browserifyBuild(outputDir)
-  result = asyncMod.map(es6Files, builder)
+const copyWebWorkers = function (callback) {
+  const sourceFiles = glob.sync(path.join('src', 'WebWorkers', '*.js'))
+  const copier = copySources('WebWorkers')
+  const result = asyncMod.map(sourceFiles, copier)
   callback(null, result)
 }
 
@@ -176,5 +159,5 @@ asyncMod.parallel([
   buildImageIOsParallel,
   buildMeshIOsParallel,
   copyMainSources,
-  browserifyWebWorkerBuildParallel
+  copyWebWorkers
 ])
