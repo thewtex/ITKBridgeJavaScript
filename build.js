@@ -102,15 +102,12 @@ let wasmFiles = glob.sync(path.join('build', 'ImageIOs', '*.wasm'))
 imageIOFiles = imageIOFiles.concat(wasmFiles)
 const copyImageIOModules = function (imageIOFile, callback) {
   let io = path.basename(imageIOFile)
-  console.log('Copying ' + io + ' ...')
   let output = path.join('dist', 'ImageIOs', io)
-
   fs.copySync(imageIOFile, output)
-
-  console.log(io + ' copy complete')
   callback(null, io)
 }
 const buildImageIOsParallel = function (callback) {
+  console.log('Copying image IOs...')
   result = asyncMod.map(imageIOFiles, copyImageIOModules)
   callback(null, result)
 }
@@ -119,36 +116,31 @@ wasmFiles = glob.sync(path.join('build', 'MeshIOs', '*.wasm'))
 meshIOFiles = meshIOFiles.concat(wasmFiles)
 const copyMeshIOModules = function (meshIOFile, callback) {
   let io = path.basename(meshIOFile)
-  console.log('Copying ' + io + ' ...')
   let output = path.join('dist', 'MeshIOs', io)
-
   fs.copySync(meshIOFile, output)
-
-  console.log(io + ' copy complete')
   callback(null, io)
 }
 const buildMeshIOsParallel = function (callback) {
+  console.log('Copying mesh IOs...')
   result = asyncMod.map(meshIOFiles, copyMeshIOModules)
   callback(null, result)
 }
 
 const copySources = ramda.curry(function (sourceSubDir, sourceFile, callback) {
   let source = path.basename(sourceFile)
-  console.log('Copying ' + source + ' ...')
   let output = path.join('dist', sourceSubDir, source)
-
   fs.copySync(sourceFile, output)
-
-  console.log(source + ' copy complete')
   callback(null, source)
 })
 const copyMainSources = function (callback) {
+  console.log('Copying main sources...')
   const sourceFiles = glob.sync(path.join('src', '*.js'))
   const copier = copySources('.')
   const result = asyncMod.map(sourceFiles, copier)
   callback(null, result)
 }
 const copyWebWorkers = function (callback) {
+  console.log('Copying web workers...')
   const sourceFiles = glob.sync(path.join('src', 'WebWorkers', '*.js'))
   const copier = copySources('WebWorkers')
   const result = asyncMod.map(sourceFiles, copier)
