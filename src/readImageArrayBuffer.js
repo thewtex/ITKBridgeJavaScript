@@ -2,7 +2,8 @@ const WebworkerPromise = require('webworker-promise')
 
 const config = require('./itkConfig.js')
 
-const worker = new window.Worker(config.webWorkersPath + '/ImageIO.worker.js')
+const workerSource = require(config.webWorkersPath + '/ImageIO.worker.js')
+const worker = new window.Worker(workerSource)
 const promiseWorker = new WebworkerPromise(worker)
 
 /**

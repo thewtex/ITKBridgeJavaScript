@@ -1,7 +1,11 @@
 var Module = {}
 Module['locateFile'] = function(fileName) {
   if(fileName === '@wasm_target@.wasm') {
-    return '../MeshIOs/@wasm_target@.wasm'
+    if(typeof meshIOsPath !== 'undefined') {
+      return meshIOsPath + '/@wasm_target@.wasm'
+    } else {
+      return '../MeshIOs/@wasm_target@.wasm'
+    }
   }
   return fileName
 }

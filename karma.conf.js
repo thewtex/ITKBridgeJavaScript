@@ -24,7 +24,6 @@ module.exports = function init(config) {
       './test/Browser/tests.js',
       { pattern: './dist/ImageIOs/**', watched: true, served: true, included: false },
       { pattern: './dist/MeshIOs/**', watched: true, served: true, included: false },
-      { pattern: './dist/WebWorkers/**', watched: true, served: true, included: false },
       { pattern: './build/ExternalData/test/**', watched: true, served: true, included: false },
     ],
 
@@ -37,7 +36,13 @@ module.exports = function init(config) {
         fs: 'empty',
       },
       module: {
-        rules: [].concat(),
+        rules: [
+          {
+            test: /\.worker\.js$/,
+            include: sourcePath,
+            use: [ { loader: 'worker-loader', options: { inline: true, fallback: false } }, ],
+          },
+        ].concat(),
       },
       resolve: {
         modules: [
@@ -45,7 +50,7 @@ module.exports = function init(config) {
           sourcePath,
         ],
         alias: {
-          './itkConfig.js': path.resolve(__dirname, 'test', 'Browser', 'config', 'itkConfigBrowserTest.js'),
+          './itkConfig$': path.resolve(__dirname, 'test', 'Browser', 'config', 'itkConfigBrowserTest.js'),
         },
       },
       plugins: [

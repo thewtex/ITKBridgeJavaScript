@@ -61,7 +61,7 @@ if(program.compile) {
   } catch(err) {
     if (err.code == 'ENOENT') {
       console.log('Running CMake configuration...')
-      const cmakeCall = spawnSync(dockcross, ['cmake', '-DRapidJSON_INCLUDE_DIR=/rapidjson/include', '-DCMAKE_BUILD_TYPE=Release', '-Bbuild', '-H.', '-GNinja', '-DITK_DIR=/ITK-build'], {
+      const cmakeCall = spawnSync(dockcross, ['cmake', '-DRapidJSON_INCLUDE_DIR=/rapidjson/include', '-DCMAKE_BUILD_TYPE=Debug', '-Bbuild', '-H.', '-GNinja', '-DITK_DIR=/ITK-build'], {
         env: process.env,
         stdio: 'inherit'
       })
@@ -75,7 +75,7 @@ if(program.compile) {
 
   // Build the Emscripten mobules with ninja
   console.log('\nRunning ninja...')
-  const ninjaCall = spawnSync(dockcross, ['ninja', '-j8', '-Cbuild'], {
+  const ninjaCall = spawnSync(dockcross, ['ninja', '-j8', '-Cbuild', 'itkVTKPolyDataMeshIOJSBindingWasm'], {
     env: process.env,
     stdio: 'inherit'
   })
