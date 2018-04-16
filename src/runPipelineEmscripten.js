@@ -1,6 +1,6 @@
 const IOTypes = require('./IOTypes.js')
 
-const runPipelineEmscripten = (module, args, outputs, inputs) => {
+const runPipelineEmscripten = (module, args, outputs, inputs, pre, post) => {
   if (inputs) {
     inputs.forEach(function (input) {
       switch (input.type) {
@@ -27,11 +27,17 @@ const runPipelineEmscripten = (module, args, outputs, inputs) => {
     })
   }
 
+  if (pre) {
+    pre(module)
+  }
   module.resetModuleStdout()
   module.resetModuleStderr()
   module.callMain(args)
   const stdout = module.getModuleStdout()
   const stderr = module.getModuleStderr()
+  if (post) {
+    post(module)
+  }
 
   let populatedOutputs = []
   if (outputs) {

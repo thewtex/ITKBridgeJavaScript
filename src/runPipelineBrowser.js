@@ -9,7 +9,7 @@ const worker = new window.Worker(
 )
 const promiseWorker = new WebworkerPromise(worker)
 
-const runPipelineBrowser = (pipelinePath, args, outputs, inputs) => {
+const runPipelineBrowser = (pipelinePath, args, outputs, inputs, pre, post) => {
   const transferables = []
   if (inputs) {
     inputs.forEach(function (input) {
@@ -38,7 +38,9 @@ const runPipelineBrowser = (pipelinePath, args, outputs, inputs) => {
       pipelinePath,
       args,
       outputs,
-      inputs
+      inputs,
+      pre,
+      post
     },
     transferables
   )

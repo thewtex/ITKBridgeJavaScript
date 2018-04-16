@@ -233,7 +233,8 @@ if (program.buildPipelines) {
   const pipelines = [
     path.join(__dirname, 'test', 'StdoutStderrPipeline'),
     path.join(__dirname, 'test', 'BinShrinkPipeline'),
-    path.join(__dirname, 'test', 'InputOutputFilesPipeline')
+    path.join(__dirname, 'test', 'InputOutputFilesPipeline'),
+    path.join(__dirname, 'test', 'EmbindPipeline')
   ]
   try {
     fs.mkdirSync(path.join(__dirname, 'dist', 'Pipelines'))

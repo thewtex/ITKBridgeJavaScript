@@ -13,7 +13,8 @@
     "doc:publish": "kw-doc -c ./doc/config.js -mp",
     "commit": "git cz",
     "build": "node ./build.js",
-    "test": "./build/dockcross bash -c \"cd build && ctest -V\" && standard \"src/*.js\" \"test/**/*.js\" && ava \"test/*.js\" && npm run browser-test",
+    "test": "./build/dockcross bash -c \"cd build && ctest -V\" && standard \"src/*.js\" \"test/**/*.js\" && npm run node-test && npm run browser-test",
+    "node-test": "ava \"test/*.js\"",
     "browser-test": "karma start ./karma.conf.js",
     "browser-test:debug": "karma start ./karma.conf.js --no-single-run"
   },

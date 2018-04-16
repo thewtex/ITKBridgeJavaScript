@@ -57,6 +57,38 @@ test('runPipelineNode uses input and output files in the Emscripten filesystem',
     })
 })
 
+test('runPipelineNode executes pre and post calls to run embind calls, etc', (t) => {
+  const pipelinePath = path.resolve(__dirname, 'EmbindPipeline', 'web-build', 'Embind')
+  const args = ['input.txt', 'input.bin', 'output.txt', 'output.bin']
+  const desiredOutputs = [
+    { path: 'output.txt', type: IOTypes.Text }
+  ]
+  const inputs = [
+    { path: 'input.bin', type: IOTypes.Binary, data: new Uint8Array([222, 173, 190, 239]) }
+  ]
+  const preFunction = (module) => {
+    module.writeFile('input.txt', 'The answer is 42.')
+  }
+  let outputBin = null
+  const postFunction = function (module) {
+    outputBin = module.getOutputBin()
+  }
+  return runPipelineNode(pipelinePath, args, desiredOutputs, inputs, preFunction, postFunction)
+    .then(function ({stdout, stderr, outputs}) {
+      t.is(outputs[0].path, 'output.txt')
+      t.is(outputs[0].type, IOTypes.Text)
+      t.is(outputs[0].data, 'The answer is 42.')
+      t.is(outputBin[0], 222)
+      t.is(outputBin[1], 173)
+      t.is(outputBin[2], 190)
+      t.is(outputBin[3], 239)
+      t.is(stdout, `Input text: The answer is 42.
+`)
+      t.is(stderr, `Input binary: ffffffdeffffffadffffffbeffffffef
+`)
+    })
+})
+
 test('runPipelineNode uses writes and read itk/Image in the Emscripten filesystem', (t) => {
   const verifyImage = (image) => {
     t.is(image.imageType.dimension, 2, 'dimension')
