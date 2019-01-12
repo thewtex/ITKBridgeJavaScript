@@ -54,6 +54,7 @@ if(BUILD_ITK_JS_IO_MODULES)
     "ITKIOMeshOBJ"
     "ITKIOMeshOFF"
     "ITKIOMeshVTK"
+    "ITKIOMeshGifti"
     CACHE STRING
     "String delimited list of ITK mesh IO modules to support.")
   set(meshios_ITKIOMeshBYU itkBYUMeshIO)
@@ -61,6 +62,7 @@ if(BUILD_ITK_JS_IO_MODULES)
   set(meshios_ITKIOMeshVTK itkVTKPolyDataMeshIO)
   set(meshios_ITKIOMeshOBJ itkOBJMeshIO)
   set(meshios_ITKIOMeshOFF itkOFFMeshIO)
+  set(meshios_ITKIOMeshGifti itkGiftiMeshIO)
 endif()
 
 

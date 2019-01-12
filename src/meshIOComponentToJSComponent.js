@@ -52,6 +52,10 @@ const meshIOComponentToJSComponent = (module, ioComponentType) => {
       componentType = FloatTypes.Float64
       break
     }
+    case module.IOComponentType.UNKNOWNCOMPONENTTYPE: {
+      componentType = FloatTypes.Float64
+      break
+    }
     default:
       throw new Error('Unknown IO component type')
   }
