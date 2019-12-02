@@ -29,6 +29,11 @@
 #include "itkDCMTKImageIO.h"
 #include "itkVectorImage.h"
 
+int main(int , char **)
+{
+  return 0;
+}
+
 namespace itk
 {
 

@@ -25,7 +25,7 @@ const loadEmscriptenModule = (itkModulesPath, modulesDirectory, moduleBaseName) 
     modulePath = prefix + '/' + modulesDirectory + '/' + moduleBaseName + 'Wasm.js'
   }
   importScripts(modulePath)
-  return Module
+  return ITKJSModule
 }
 
 export default loadEmscriptenModule

@@ -5,6 +5,9 @@ const imageIOComponentToJSComponent = require('./imageIOComponentToJSComponent.j
 const imageIOPixelTypeToJSPixelType = require('./imageIOPixelTypeToJSPixelType.js')
 
 const readImageEmscriptenFSDICOMFileSeries = (seriesReaderModule, directory, firstFile) => {
+  // Ensure runtime is initialized
+  seriesReaderModule.callMain();
+
   const seriesReader = new seriesReaderModule.ITKDICOMImageSeriesReader()
   if (!seriesReader.CanReadTestFile(firstFile)) {
     throw new Error('Could not read file: ' + firstFile)

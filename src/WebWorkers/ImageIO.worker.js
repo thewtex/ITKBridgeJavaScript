@@ -62,6 +62,7 @@ const readImage = (input) => {
 
   const blob = new Blob([input.data])
   const blobs = [{ name: input.name, data: blob }]
+  ioModule.callMain();
   ioModule.mountBlobs(mountpoint, blobs)
   const filePath = mountpoint + '/' + input.name
   const image = readImageEmscriptenFSFile(ioModule, filePath)
@@ -119,11 +120,8 @@ const writeImage = (input) => {
   return new registerWebworker.TransferableResponse(writtenFile.buffer, [writtenFile.buffer])
 }
 
-const readDICOMImageSeries = (input) => {
-  const seriesReader = 'itkDICOMImageSeriesReaderJSBinding'
-  if (!seriesReaderModule) {
-    seriesReaderModule = loadEmscriptenModule(input.config.itkModulesPath, 'ImageIOs', seriesReader)
-  }
+const readDICOMSeriesInternal = (input) => {
+  seriesReaderModule.callMain();
 
   const blobs = input.fileDescriptions.map((fileDescription) => {
     const blob = new Blob([fileDescription.data])
@@ -137,6 +135,19 @@ const readDICOMImageSeries = (input) => {
   seriesReaderModule.unmountBlobs(mountpoint)
 
   return new registerWebworker.TransferableResponse(image, [image.data.buffer])
+}
+
+const readDICOMImageSeries = (input) => {
+  const seriesReader = 'itkDICOMImageSeriesReaderJSBinding'
+  if (!seriesReaderModule) {
+    ITKJSModule = loadEmscriptenModule(input.config.itkModulesPath, 'ImageIOs', seriesReader)
+    return ITKJSModule().then((Module) => {
+      seriesReaderModule = Module
+      return readDICOMSeriesInternal(input)
+    })
+  }
+
+  return readDICOMSeriesInternal(input)
 }
 
 registerWebworker(function (input) {
