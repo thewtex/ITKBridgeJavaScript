@@ -22,9 +22,9 @@ RUN git clone https://github.com/thewtex/VTK.git && \
     -DCMAKE_INSTALL_PREFIX:PATH=/install-prefix \
     -DBUILD_EXAMPLES:BOOL=OFF \
     -DBUILD_TESTING:BOOL=OFF \
-    -DVTK_RENDERING_BACKEND:STRING=None \
-    -DModule_vtkIOExport:BOOL=ON \
     -DVTK_NO_PLATFORM_SOCKETS:BOOL=ON \
+    -DVTK_RENDERING_BACKEND:STRING=None \
+    -DVTK_OPENGL_USE_GLES:BOOL=ON \
     -DModule_vtkRenderingContextOpenGL2:BOOL=OFF \
     -DVTK_USE_SYSTEM_FREETYPE:BOOL=ON \
     -DFREETYPE_INCLUDE_DIRS:PATH=include \
@@ -63,7 +63,7 @@ ENV CMAKE_TOOLCHAIN_FILE ${CMAKE_TOOLCHAIN_FILE_ITK}
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG IMAGE=kitware/itk-js-vtk
-ARG VERSION=latest
+ARG VERSION=latest-rendering
 ARG VCS_REF
 ARG VCS_URL
 LABEL org.label-schema.build-date=$BUILD_DATE \
